@@ -1,12 +1,52 @@
-const express = require('express')
+const express = require('express');
 const fs = require('fs');
-const app = express()
+
+const dir = require('path');
+const app = express();
 const port = process.env.PORT || 8000
 
-app.get('/courseDetails', (req, res) => sendLiveSessionData(req,res));
+app.use(express.urlencoded());
+app.use(express.json());
+
+app.use('/courseDetails', (req,res,next) => checkFile(req, res, next));
+
+app.route('/courseDetails')
+  .get((req, res) => getLiveSessionData(req, res))
+  .post((req, res) => updateliveSession(req, res));
+
+  function checkFile(req,res,next) {
+    if (!fs.existsSync(dir.join(__dirname, 'livesession.json'))) {
+      console.log('there is no session file, creating one');
+      fs.writeFile(dir.join(__dirname, 'livesession.json'), '', (err) => {
+        if (err) {
+          console.log('An error occured while creating the file named livesession.json', err);
+          return res.status(500);
+        }
+        console.log('File successfully created');
+      });
+    } else {console.log('file present')}
+    next();
+  }
+
+function getLiveSessionData(req, res) {
+  console.log('create');
+  if (!fs.existsSync(dir.join(__dirname, 'livesession.json'))) {
+    console.log('there is no session file');
+    return res.status(500);
+  }
+  return res.sendStatus(200);
+}
+
+function updateliveSession(req, res) {
+  console.log('update');
+  //write contents in the file
+  let dataToWrite = JSON.stringify(req.body) ? JSON.stringify(req.body) : '';
+  fs.writeFile(dir.join(__dirname, 'livesession.json'), dataToWrite, (err) => {
+    if(err) {
+      return res.status(500);
+    }
+    return res.sendStatus(200);
+});
+}
 
 app.listen(port, () => console.log(`Live session app listening on port ${port}!`))
-
-sendLiveSessionData(req,res) {
-
-return res.json({key: 'new value'});}
