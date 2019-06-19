@@ -8,9 +8,9 @@ const port = process.env.PORT || 8000
 app.use(express.urlencoded());
 app.use(express.json());
 
-app.use('/courseDetails', (req,res,next) => checkFile(req, res, next));
+app.use('/livesession/details', (req,res,next) => checkFile(req, res, next));
 
-app.route('/courseDetails')
+app.route('/livesession/details')
   .get((req, res) => getLiveSessionData(req, res))
   .post((req, res) => updateliveSession(req, res));
 
