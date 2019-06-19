@@ -38,7 +38,7 @@ function getLiveSessionData(req, res) {
         data = JSON.parse(data);
       }
       catch (e) {
-        console.log('An error occured while parsing data from the file ', e);
+        console.log('An error occured while parsing data from the file  ', e);
         data = [];
       }
       return res.json(data);
