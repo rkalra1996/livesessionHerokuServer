@@ -31,9 +31,9 @@ app.route('/courseDetails')
 function getLiveSessionData(req, res) {
   console.log('get data');
   let data = fs.readFileSync(dir.join(__dirname, 'livesession.json'), 'utf-8');
-    if (!!!data) {
+    if (!data) {
       console.log('Error occured while reading the file');
-      return sendStatus(500);
+      return status(500);
     } else {
       data = JSON.parse(data);
       return res.json(data);
