@@ -9,4 +9,4 @@ app.listen(port, () => console.log(`Live session app listening on port ${port}!`
 
 sendLiveSessionData(req,res) {
 
-return res.send({key: 'new value'});}
+return res.json({key: 'new value'});}
