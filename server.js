@@ -29,13 +29,16 @@ app.route('/courseDetails')
   }
 
 function getLiveSessionData(req, res) {
-  console.log('create');
-  if (!fs.existsSync(dir.join(__dirname, 'livesession.json'))) {
-    console.log('there is no session file');
-    return res.status(500);
+  console.log('get data');
+  let data = fs.readFileSync(dir.join(__dirname, 'livesession.json'), 'utf-8');
+    if (!!!data) {
+      console.log('Error occured while reading the file');
+      return sendStatus(500);
+    } else {
+      data = JSON.parse(data);
+      return res.json(data);
+    }
   }
-  return res.sendStatus(200);
-}
 
 function updateliveSession(req, res) {
   console.log('update');
