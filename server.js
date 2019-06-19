@@ -17,13 +17,12 @@ app.route('/courseDetails')
   function checkFile(req,res,next) {
     if (!fs.existsSync(dir.join(__dirname, 'livesession.json'))) {
       console.log('there is no session file, creating one');
-      fs.writeFile(dir.join(__dirname, 'livesession.json'), '', (err) => {
-        if (err) {
+      let response = fs.writeFileSync(dir.join(__dirname, 'livesession.json'));
+        if (response !== undefined) {
           console.log('An error occured while creating the file named livesession.json', err);
           return res.status(500);
         }
         console.log('File successfully created');
-      });
     } else {console.log('file present')}
     next();
   }
@@ -44,12 +43,11 @@ function updateliveSession(req, res) {
   console.log('update');
   //write contents in the file
   let dataToWrite = JSON.stringify(req.body) ? JSON.stringify(req.body) : '';
-  fs.writeFileSync(dir.join(__dirname, 'livesession.json'), dataToWrite, (err) => {
-    if(err) {
+  let response = fs.writeFileSync(dir.join(__dirname, 'livesession.json'), dataToWrite);
+    if(response === false) {
       return res.status(500);
     }
     return res.sendStatus(200);
-});
 }
 
 app.listen(port, () => console.log(`Live session app listening on port ${port}!`))
