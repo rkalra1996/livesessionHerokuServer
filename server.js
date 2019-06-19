@@ -34,7 +34,13 @@ function getLiveSessionData(req, res) {
       console.log('Error occured while reading the file');
       return res.sendStatus(500);
     } else {
-      data = JSON.parse(data) ? JSON.parse(data) : [];
+      try {
+        data = JSON.parse(data);
+      }
+      catch (e) {
+        console.log('An error occured while parsing data from the file ', e);
+        data = [];
+      }
       return res.json(data);
     }
   }
