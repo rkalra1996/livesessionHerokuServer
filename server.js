@@ -44,7 +44,7 @@ function updateliveSession(req, res) {
   console.log('update');
   //write contents in the file
   let dataToWrite = JSON.stringify(req.body) ? JSON.stringify(req.body) : '';
-  fs.writeFile(dir.join(__dirname, 'livesession.json'), dataToWrite, (err) => {
+  fs.writeFileSync(dir.join(__dirname, 'livesession.json'), dataToWrite, (err) => {
     if(err) {
       return res.status(500);
     }
